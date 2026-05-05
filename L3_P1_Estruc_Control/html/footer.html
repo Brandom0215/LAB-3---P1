@@ -1,0 +1,21 @@
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+<footer class="footer-custom mt-auto">
+    <div class="container text-center">
+        <p class="mb-1">
+            <strong>Universidad Tecnológica de Panamá</strong> &mdash; Centro Regional de Coclé
+        </p>
+        <p class="mb-1">
+            Facultad de Ingeniería en Sistemas
+        </p>
+        <p class="mb-1">
+            Desarrollo de Software VII &copy; &mdash;
+            Facilitadora del Curso: <strong>Ing. María Y. Tejedor M. de Fernández</strong>
+        </p>
+        <p class="mb-0">
+            Asignación desarrollada por: <em>Estudiantes de Desarrollo de Software VII</em>
+        </p>
+    </div>
+</footer>
