@@ -40,7 +40,65 @@
 
             
             // Alexandra: Validaciones y restricciones
-            
+            // Si no se selecciono ningun producto, mostrar advertencia
+if ($monitor_cant == 0 && $cpu_cant == 0 && $impresora_cant == 0) {
+    echo "<script>
+        var div = document.getElementById('resultado-factura');
+        div.style.display = 'block';
+        div.innerHTML = '<div style=\"background:#fff8e1; border:1px solid #f39c12; border-radius:8px; padding:15px; color:#e67e22;\"><strong>Compra vacia:</strong><br><br>Debe seleccionar al menos un producto antes de generar la factura.</div>';
+        div.scrollIntoView({behavior: 'smooth'});
+    </script>";
+    exit;
+}
+
+// Si el campo edad viene vacio, pedir que lo llene
+if (empty($_POST['edad_cliente']) || $_POST['edad_cliente'] === '') {
+    echo "<script>
+        var div = document.getElementById('resultado-factura');
+        div.style.display = 'block';
+        div.innerHTML = '<div style=\"background:#fff8e1; border:1px solid #f39c12; border-radius:8px; padding:15px; color:#e67e22;\"><strong>Edad requerida:</strong><br><br>Por favor ingrese su edad antes de generar la factura.</div>';
+        div.scrollIntoView({behavior: 'smooth'});
+    </script>";
+    exit;
+}
+
+// Si la edad es negativa, cero, o mayor a 75, no es valida
+if ($edad_cliente <= 0 || $edad_cliente > 75 || !is_numeric($edad_cliente)) {
+    echo "<script>
+        var div = document.getElementById('resultado-factura');
+        div.style.display = 'block';
+        div.innerHTML = '<div style=\"background:#fff8e1; border:1px solid #f39c12; border-radius:8px; padding:15px; color:#e67e22;\"><strong>Edad invalida:</strong><br><br>Debe ingresar una edad entre 1 y 75 anos. No se permiten numeros negativos ni valores fuera de rango.</div>';
+        div.scrollIntoView({behavior: 'smooth'});
+    </script>";
+    exit;
+}
+
+// Revisar restricciones de cantidad por producto
+$errores = [];
+
+// El cliente solo puede llevar 1 monitor
+if ($monitor_cant > 1) {
+    $errores[] = "Solo se permite comprar maximo 1 monitor.";
+}
+
+// El cliente puede llevar hasta 3 CPUs sin importar la marca
+if ($cpu_cant > 3) {
+    $errores[] = "Solo se permite comprar maximo 3 CPUs.";
+}
+
+// Las impresoras no tienen limite de cantidad
+
+// Si hay algun error de cantidad, mostrarlos todos juntos
+if (!empty($errores)) {
+    $lista_errores = implode("<br>- ", $errores);
+    echo "<script>
+        var div = document.getElementById('resultado-factura');
+        div.style.display = 'block';
+        div.innerHTML = '<div style=\"background:#fff0f0; border:1px solid #e74c3c; border-radius:8px; padding:15px; color:#c0392b;\"><strong>Errores en la compra:</strong><br><br>- $lista_errores</div>';
+        div.scrollIntoView({behavior: 'smooth'});
+    </script>";
+    exit;
+}  
 
             
             // Luis: Cálculos (subtotal, ITBMS 7%, descuento 20%)
