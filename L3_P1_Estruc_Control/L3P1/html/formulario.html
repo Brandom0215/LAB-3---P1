@@ -5,181 +5,205 @@
 require_once __DIR__ . '/../php/arrays.php';
 
 // Recuperar valores del POST para mantener datos en el form
-$post_monitor_marca   = isset($_POST['monitor_marca'])   ? $_POST['monitor_marca']   : '';
-$post_cpu_marca       = isset($_POST['cpu_marca'])        ? $_POST['cpu_marca']        : '';
-$post_impresora_marca = isset($_POST['impresora_marca'])  ? $_POST['impresora_marca']  : '';
-$post_monitor_cant    = isset($_POST['monitor_cant'])     ? $_POST['monitor_cant']     : '';
-$post_cpu_cant        = isset($_POST['cpu_cant'])         ? $_POST['cpu_cant']         : '';
-$post_impresora_cant  = isset($_POST['impresora_cant'])   ? $_POST['impresora_cant']   : '';
-$post_edad            = isset($_POST['edad_cliente'])     ? $_POST['edad_cliente']     : '';
+$post_monitor_marca = isset($_POST['monitor_marca']) ? $_POST['monitor_marca'] : '';
+$post_cpu_marca = isset($_POST['cpu_marca']) ? $_POST['cpu_marca'] : '';
+$post_impresora_marca = isset($_POST['impresora_marca']) ? $_POST['impresora_marca'] : '';
+
+$post_monitor_cant = isset($_POST['monitor_cant']) ? $_POST['monitor_cant'] : '';
+$post_cpu_cant = isset($_POST['cpu_cant']) ? $_POST['cpu_cant'] : '';
+$post_impresora_cant = isset($_POST['impresora_cant']) ? $_POST['impresora_cant'] : '';
+$post_edad = isset($_POST['edad_cliente']) ? $_POST['edad_cliente'] : '';
 
 // Precios iniciales: si hay POST usa ese, sino el primer producto del array
-$init_precio_monitor   = ($post_monitor_marca !== '') 
-    ? $almacen->getPrecio('monitor', $post_monitor_marca) 
-    : reset($monitores);
-
-$init_precio_cpu       = ($post_cpu_marca !== '') 
-    ? $almacen->getPrecio('cpu', $post_cpu_marca) 
-    : reset($cpus);
-
-$init_precio_impresora = ($post_impresora_marca !== '') 
-    ? $almacen->getPrecio('impresora', $post_impresora_marca) 
-    : reset($impresoras);
+$init_precio_monitor = ($post_monitor_marca !== '') ? $almacen->getPrecio('monitor', $post_monitor_marca) : reset($monitores);
+$init_precio_cpu = ($post_cpu_marca !== '') ? $almacen->getPrecio('cpu', $post_cpu_marca) : reset($cpus);
+$init_precio_impresora = ($post_impresora_marca !== '') ? $almacen->getPrecio('impresora', $post_impresora_marca) : reset($impresoras);
 ?>
 
-<link rel="stylesheet" href="L3P1/css/style.css">
+<link rel="stylesheet" href="L3P1/css/style.css" />
 
 <form method="POST" action="" id="form-almacen" class="form-almacen">
-
-    <!--Fila de las 3 categorias -->
-    <div class="row g-4">
-
-        <!-- Monitor-->
-        <div class="col-md-4">
-            <div class="categoria-card">
-                <div class="categoria-header monitor">
-                    <i class="bi bi-display"></i>
-                    <h5>Monitores</h5>
-                </div>
-
-                <!-- Tabla de precios generada con el método de la clase -->
-                <?php echo $almacen->generarTablaPrecios($monitores); ?>
-
-                <!-- Select de marca, mantiene selección tras POST -->
-                <label for="select-monitor">Marca</label>
-                <select name="monitor_marca" id="select-monitor" class="form-select mb-3">
-                    <?php echo $almacen->generarOpciones($monitores, $post_monitor_marca); ?>
-                </select>
-
-                <!-- Precio unitario -->
-                <div class="campo-vertical">
-                    <label>Precio unitario</label>
-                    <div class="precio-display" id="precio-monitor">
-                        $<?php echo number_format($init_precio_monitor, 2); ?>
-                    </div>
-                </div>
-
-                <!-- Cantidad, mantiene valor tras POST-->
-                <div class="campo-vertical">
-                    <label for="cant-monitor">Cantidad</label>
-                    <input type="number" name="monitor_cant" id="cant-monitor"
-                           class="form-control cantidad-input" min="0" max="1"
-                           placeholder="0 - 1"
-                           value="<?php echo htmlspecialchars($post_monitor_cant); ?>">
-                </div>
-
-                <p class="restriccion-texto">
-                    <i class="bi bi-info-circle"></i> Máximo <strong>1</strong> monitor
-                </p>
-            </div>
+  <!--Fila de las 3 categorias -->
+  <div class="row g-4">
+    <!-- Monitor-->
+    <div class="col-md-4">
+      <div class="categoria-card">
+        <div class="categoria-header monitor">
+          <i class="bi bi-display"></i>
+          <h5>Monitores</h5>
         </div>
 
-        <!-- CPU -->
-        <div class="col-md-4">
-            <div class="categoria-card">
-                <div class="categoria-header cpu">
-                    <i class="bi bi-cpu"></i>
-                    <h5>CPUs</h5>
-                </div>
+        <!-- Tabla de precios generada con el método de la clase -->
+        <?php echo $almacen->generarTablaPrecios($monitores); ?>
 
-                <!-- Tabla de precios generada con el método de la clase -->
-                <?php echo $almacen->generarTablaPrecios($cpus); ?>
+        <!-- Select de marca, mantiene selección tras POST -->
+        <label for="select-monitor">Marca</label>
+        <select
+          name="monitor_marca"
+          id="select-monitor"
+          class="form-select mb-3"
+        >
+          <?php echo $almacen->generarOpciones($monitores, $post_monitor_marca);
+          ?>
+        </select>
 
-                <!-- Select de marca, mantiene selección tras POST -->
-                <label for="select-cpu">Marca</label>
-                <select name="cpu_marca" id="select-cpu" class="form-select mb-3">
-                    <?php echo $almacen->generarOpciones($cpus, $post_cpu_marca); ?>
-                </select>
-
-                <!-- Precio unitario -->
-                <div class="campo-vertical">
-                    <label>Precio unitario</label>
-                    <div class="precio-display" id="precio-cpu">
-                        $<?php echo number_format($init_precio_cpu, 2); ?>
-                    </div>
-                </div>
-
-                <!-- Cantidad, se mantiene el valor tras POST -->
-                <div class="campo-vertical">
-                    <label for="cant-cpu">Cantidad</label>
-                    <input type="number" name="cpu_cant" id="cant-cpu"
-                           class="form-control cantidad-input" min="0" max="3"
-                           placeholder="0 - 3"
-                           value="<?php echo htmlspecialchars($post_cpu_cant); ?>">
-                </div>
-
-                <p class="restriccion-texto">
-                    <i class="bi bi-info-circle"></i> Máximo <strong>3</strong> CPUs
-                </p>
-            </div>
+        <!-- Precio unitario -->
+        <div class="campo-vertical">
+          <label>Precio unitario</label>
+          <div class="precio-display" id="precio-monitor">
+            $<?php echo number_format($init_precio_monitor, 2); ?>
+          </div>
         </div>
 
-        <!-- IMPRESORA-->
-        <div class="col-md-4">
-            <div class="categoria-card">
-                <div class="categoria-header impresora">
-                    <i class="bi bi-printer"></i>
-                    <h5>Impresoras</h5>
-                </div>
-
-                <!-- Tabla de precios generada con el método de la clase -->
-                <?php echo $almacen->generarTablaPrecios($impresoras); ?>
-
-                <!-- Select de marca , mantiene selección tras POST -->
-                <label for="select-impresora">Marca</label>
-                <select name="impresora_marca" id="select-impresora" class="form-select mb-3">
-                    <?php echo $almacen->generarOpciones($impresoras, $post_impresora_marca); ?>
-                </select>
-
-                <!-- Precio unitario -->
-                <div class="campo-vertical">
-                    <label>Precio unitario</label>
-                    <div class="precio-display" id="precio-impresora">
-                        $<?php echo number_format($init_precio_impresora, 2); ?>
-                    </div>
-                </div>
-
-                <!-- Cantidad, mantiene valor tras POST -->
-                <div class="campo-vertical">
-                    <label for="cant-impresora">Cantidad</label>
-                    <input type="number" name="impresora_cant" id="cant-impresora"
-                           class="form-control cantidad-input" min="0"
-                           placeholder="0+"
-                           value="<?php echo htmlspecialchars($post_impresora_cant); ?>">
-                </div>
-
-                <p class="restriccion-texto">
-                    <i class="bi bi-info-circle"></i> Sin límite de cantidad
-                </p>
-            </div>
+        <!-- Cantidad, mantiene valor tras POST-->
+        <div class="campo-vertical">
+          <label for="cant-monitor">Cantidad</label>
+          <input
+            type="number"
+            name="monitor_cant"
+            id="cant-monitor"
+            class="form-control cantidad-input"
+            min="0"
+            max="1"
+            placeholder="0 - 1"
+            value="<?php echo htmlspecialchars($post_monitor_cant); ?>"
+          />
         </div>
 
-    </div><!-- /row -->
-
-    <!-- Edad del cliente-->
-    <div class="edad-section">
-        <i class="bi bi-person-badge"></i>
-        <label for="edad-cliente">Edad del cliente</label>
-        <input type="number" name="edad_cliente" id="edad-cliente"
-               class="form-control" min="1" max="120"
-               placeholder="Ej: 60"
-               value="<?php echo htmlspecialchars($post_edad); ?>">
-        <small class="text-muted">Mayores de 57 años reciben un 20% de descuento</small>
+        <p class="restriccion-texto">
+          <i class="bi bi-info-circle"></i> Máximo <strong>1</strong> monitor
+        </p>
+      </div>
     </div>
 
-    <!-- Botones-->
-    <div class="botones-zona">
-        <button type="submit" name="btnComprar" class="btn btn-comprar">
-            <i class="bi bi-receipt-cutoff me-1"></i>Generar Factura
-        </button>
-        <button type="button" id="btn-limpiar" class="btn btn-limpiar">
-            <i class="bi bi-arrow-counterclockwise me-1"></i>Limpiar
-        </button>
+    <!-- CPU -->
+    <div class="col-md-4">
+      <div class="categoria-card">
+        <div class="categoria-header cpu">
+          <i class="bi bi-cpu"></i>
+          <h5>CPUs</h5>
+        </div>
+
+        <!-- Tabla de precios generada con el método de la clase -->
+        <?php echo $almacen->generarTablaPrecios($cpus); ?>
+
+        <!-- Select de marca, mantiene selección tras POST -->
+        <label for="select-cpu">Marca</label>
+        <select name="cpu_marca" id="select-cpu" class="form-select mb-3">
+          <?php echo $almacen->generarOpciones($cpus, $post_cpu_marca); ?>
+        </select>
+
+        <!-- Precio unitario -->
+        <div class="campo-vertical">
+          <label>Precio unitario</label>
+          <div class="precio-display" id="precio-cpu">
+            $<?php echo number_format($init_precio_cpu, 2); ?>
+          </div>
+        </div>
+
+        <!-- Cantidad, se mantiene el valor tras POST -->
+        <div class="campo-vertical">
+          <label for="cant-cpu">Cantidad</label>
+          <input
+            type="number"
+            name="cpu_cant"
+            id="cant-cpu"
+            class="form-control cantidad-input"
+            min="0"
+            max="3"
+            placeholder="0 - 3"
+            value="<?php echo htmlspecialchars($post_cpu_cant); ?>"
+          />
+        </div>
+
+        <p class="restriccion-texto">
+          <i class="bi bi-info-circle"></i> Máximo <strong>3</strong> CPUs
+        </p>
+      </div>
     </div>
 
+    <!-- IMPRESORA-->
+    <div class="col-md-4">
+      <div class="categoria-card">
+        <div class="categoria-header impresora">
+          <i class="bi bi-printer"></i>
+          <h5>Impresoras</h5>
+        </div>
+
+        <!-- Tabla de precios generada con el método de la clase -->
+        <?php echo $almacen->generarTablaPrecios($impresoras); ?>
+
+        <!-- Select de marca , mantiene selección tras POST -->
+        <label for="select-impresora">Marca</label>
+        <select
+          name="impresora_marca"
+          id="select-impresora"
+          class="form-select mb-3"
+        >
+          <?php echo $almacen->generarOpciones($impresoras,
+          $post_impresora_marca); ?>
+        </select>
+
+        <!-- Precio unitario -->
+        <div class="campo-vertical">
+          <label>Precio unitario</label>
+          <div class="precio-display" id="precio-impresora">
+            $<?php echo number_format($init_precio_impresora, 2); ?>
+          </div>
+        </div>
+
+        <!-- Cantidad, mantiene valor tras POST -->
+        <div class="campo-vertical">
+          <label for="cant-impresora">Cantidad</label>
+          <input
+            type="number"
+            name="impresora_cant"
+            id="cant-impresora"
+            class="form-control cantidad-input"
+            min="0"
+            placeholder="0+"
+            value="<?php echo htmlspecialchars($post_impresora_cant); ?>"
+          />
+        </div>
+
+        <p class="restriccion-texto">
+          <i class="bi bi-info-circle"></i> Sin límite de cantidad
+        </p>
+      </div>
+    </div>
+  </div>
+  <!-- /row -->
+
+  <!-- Edad del cliente-->
+  <div class="edad-section">
+    <i class="bi bi-person-badge"></i>
+    <label for="edad-cliente">Edad del cliente</label>
+    <input
+      type="number"
+      name="edad_cliente"
+      id="edad-cliente"
+      class="form-control"
+      min="1"
+      max="120"
+      placeholder="Ej: 60"
+      value="<?php echo htmlspecialchars($post_edad); ?>"
+    />
+    <small class="text-muted"
+      >Mayores de 57 años reciben un 20% de descuento</small
+    >
+  </div>
+
+  <!-- Botones-->
+  <div class="botones-zona">
+    <button type="submit" name="btnComprar" class="btn btn-comprar">
+      <i class="bi bi-receipt-cutoff me-1"></i>Generar Factura
+    </button>
+    <button type="button" id="btn-limpiar" class="btn btn-limpiar">
+      <i class="bi bi-arrow-counterclockwise me-1"></i>Limpiar
+    </button>
+  </div>
 </form>
 
-<!-- Zona de resultados....  -->
-<div id="resultado-factura" class="resultado-section" style="display:none;"></div>
+<!-- Zona de resultados movida a L3P1.php para evitar duplicados -->
 
 <script src="L3P1/js/script.js"></script>
